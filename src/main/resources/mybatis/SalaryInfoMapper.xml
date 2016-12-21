@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.green.bsp.mapper.SalaryInfoMapper">
+ 
+  <select id="querySalaryInfo" resultType="com.green.bsp.pojo.SalaryInfo">
+    select * from tbl_salaryinfo;
+  </select>
+  
+  <insert id="batchAddSalaryInfos" parameterType="java.util.List">
+  <selectKey resultType="long" keyProperty="id" order="AFTER"> 
+  SELECT LAST_INSERT_ID()
+  </selectKey>
+  insert into tbl_salaryinfo(date,userName,postSalary,advancePerformanceAward,safetyAward,seniorityWage,specialPaste,performanceLiquidation,coolingAndHeatingCosts,replenishment,overtimePay,reward,subsidiesForOutgoingCars,lifeSecurity,MealCosts,deservedWages,pension,pensionAdjustment,annuity,unemploymentBenefits,unemploymentAdjustment,medicalTreatment,medicalTreatmentAdjustment,providentFund,SeriousIllness,telephoneSubsidies,reserveFund,personalIncomeTax,realWages) values
+  <foreach collection="list" item="item" index="index"
+  separator=",">
+  (#{item.date},#{item.userName},#{item.postSalary},#{item.advancePerformanceAward},#{item.safetyAward},#{item.seniorityWage},#{item.specialPaste},#{item.performanceLiquidation},#{item.coolingAndHeatingCosts},#{item.replenishment},#{item.overtimePay},#{item.reward},#{item.subsidiesForOutgoingCars},#{item.lifeSecurity},#{item.MealCosts},#{item.deservedWages},#{item.pension},#{item.pensionAdjustment},#{item.annuity},#{item.unemploymentBenefits},#{item.unemploymentAdjustment},#{item.medicalTreatment},#{item.medicalTreatmentAdjustment},#{item.providentFund},#{item.SeriousIllness},#{item.telephoneSubsidies},#{item.reserveFund},#{item.personalIncomeTax},#{item.realWages})
+  </foreach>
+  </insert>
+  
+  <!--  
+  <insert id="batchAddSalaryInfos" parameterType="com.green.bsp.pojo.SalaryInfo" useGeneratedKeys="true" keyProperty="id">
+	  <foreach collection="list" item="item" index="index" separator=";">
+	    insert into tbl_salaryinfo(date,userName,postSalary,advancePerformanceAward,safetyAward,seniorityWage,specialPaste,performanceLiquidation,coolingAndHeatingCosts,replenishment,overtimePay,reward,subsidiesForOutgoingCars,lifeSecurity,MealCosts,deservedWages,pension,pensionAdjustment,annuity,unemploymentBenefits,unemploymentAdjustment,medicalTreatment,medicalTreatmentAdjustment,providentFund,SeriousIllness,telephoneSubsidies,reserveFund,personalIncomeTax,realWages) values (#{item.date},#{item.userName},#{item.postSalary},#{item.advancePerformanceAward},#{item.safetyAward},#{item.seniorityWage},#{item.specialPaste},#{item.performanceLiquidation},#{item.coolingAndHeatingCosts},#{item.replenishment},#{item.overtimePay},#{item.reward},#{item.subsidiesForOutgoingCars},#{item.lifeSecurity},#{item.MealCosts},#{item.deservedWages},#{item.pension},#{item.pensionAdjustment},#{item.annuity},#{item.unemploymentBenefits},#{item.unemploymentAdjustment},#{item.medicalTreatment},#{item.medicalTreatmentAdjustment},#{item.providentFund},#{item.SeriousIllness},#{item.telephoneSubsidies},#{item.reserveFund},#{item.personalIncomeTax},#{item.realWages})
+	  </foreach> 
+  </insert>
+  -->
+ 
+</mapper>
