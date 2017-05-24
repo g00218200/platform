@@ -18,6 +18,8 @@
     <mybatis.spring.version>1.2.4</mybatis.spring.version>
     <mapper.version>3.3.6</mapper.version>
     <pagehelper.version>4.1.1</pagehelper.version>
+    <project.web-common.lib-targetPath>./build/</project.web-common.lib-targetPath>
+    <project.commonmodule.lib-source.directory>E:\\IDE\\repo_maven\\com\\green\\cloud_bsp\\0.0.1-SNAPSHOT</project.commonmodule.lib-source.directory>
   </properties>
 
   <dependencies>
@@ -32,10 +34,12 @@
       <artifactId>spring-boot-starter-web</artifactId>
       <version>1.3.7.RELEASE</version>
       <exclusions>
+        <!-- 
         <exclusion>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
         </exclusion>
+         -->
         <exclusion>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-logging</artifactId>
@@ -47,11 +51,6 @@
        <artifactId>spring-boot-starter-log4j</artifactId>
        <version>1.3.7.RELEASE</version>
     </dependency>
-    <dependency>
-	    <groupId>org.springframework.boot</groupId>
-	    <artifactId>spring-boot-starter-jetty</artifactId>
-	    <version>1.3.7.RELEASE</version>
-	</dependency>
 	<dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-test</artifactId>
@@ -113,6 +112,11 @@
          <artifactId>mysql-connector-java</artifactId>
          <version>5.1.30</version>
      </dependency>
+      <dependency>
+          <groupId>com.microsoft.sqlserver</groupId>
+          <artifactId>sqljdbc4</artifactId>
+          <version>4.0</version>
+      </dependency>
      <dependency>
          <groupId>com.alibaba</groupId>
          <artifactId>druid</artifactId>
@@ -165,10 +169,22 @@
   
   <!-- Package as an executable jar -->
     <build>
+        <outputDirectory>src/main/webapp/WEB-INF/classes</outputDirectory>
+		<testOutputDirectory>src/main/webapp/WEB-INF/classes</testOutputDirectory>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.green.bsp.Application</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <dependencies>
 			        <dependency>
 			            <groupId>org.springframework</groupId>
@@ -177,6 +193,59 @@
 			        </dependency>
 			    </dependencies>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                    <showWarnings>true</showWarnings>
+                </configuration>
+            </plugin>
+            <!-- 指定依赖包打包路径 -->
+            <plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-dependency-plugin</artifactId>
+			    <version>2.2</version>
+			    <executions>
+			        <execution>
+			            <id>copy-dependencies</id>
+			            <phase>package</phase>
+			                        <goals>   
+			                            <goal>copy-dependencies</goal>
+			                        </goals>
+			            <configuration>
+			                <outputDirectory>${project.build.directory}/locallib</outputDirectory>
+			                <overWriteReleases>false</overWriteReleases>
+			                <overWriteSnapshots>false</overWriteSnapshots>
+			                <overWriteIfNewer>true</overWriteIfNewer>
+			            </configuration>
+			        </execution>
+			    </executions>
+			</plugin>
+	        <plugin>
+	            <artifactId>maven-antrun-plugin</artifactId>
+	            <executions>
+	                <execution>
+	                    <id>copy-lib-src-webapps</id>
+	                    <phase>package</phase>
+	                    <configuration>
+	                        <tasks>
+	                           <!-- <delete dir="src/main/webapp/WEB-INF/lib" />-->
+	                            <copy todir="${project.web-common.lib-targetPath}">
+	                                <fileset dir="${project.commonmodule.lib-source.directory}">
+	                                    <include name="*" />
+	                                </fileset>
+	                            </copy>
+	                        </tasks>
+	                    </configuration>
+	                    <goals>
+	                        <goal>run</goal>
+	                    </goals>
+	                </execution>
+	            </executions>
+	        </plugin>
+            
         </plugins>
     </build>
     

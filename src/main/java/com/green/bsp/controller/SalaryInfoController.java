@@ -1,7 +1,6 @@
 package com.green.bsp.controller;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,10 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.green.bsp.common.RWExcelFile_jxl;
 import com.green.bsp.pojo.SalaryInfo;
-import com.green.bsp.pojo.UserInfo;
 import com.green.bsp.service.SalaryInfoService;
 
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @Controller
@@ -30,12 +27,18 @@ public class SalaryInfoController {
     private SalaryInfoService salaryInfoService;
 
 	@RequestMapping("/toHome")
-    public String querySalaryInfo(Model model) 
+    public String toHome(Model model) 
+	{
+		return "/core/homepage/homepage";
+    }
+
+	@RequestMapping("/toSalaryInfo")
+	public String toSalaryInfo(Model model)
 	{
 		List<SalaryInfo> salaryInfoList = salaryInfoService.querySalaryInfo();
 		model.addAttribute("salarylist", salaryInfoList);
-		return "/core/homepage/homepage";
-    }
+		return "/homePage";
+	}
 	
 	@RequestMapping("/readSalaryInfoList")
 	public String readSalaryInfoList(Model model)

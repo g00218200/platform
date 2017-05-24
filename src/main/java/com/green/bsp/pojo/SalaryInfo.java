@@ -1,7 +1,5 @@
 package com.green.bsp.pojo;
 
-import java.util.Date;
-
 public class SalaryInfo extends BaseEntity {
 	
 	//日期

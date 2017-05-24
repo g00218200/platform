@@ -28,4 +28,5 @@ public class SalaryInfoService {
     {
         return salaryInfoMapper.batchAddSalaryInfos(salarylist);
     }
+    
 }
